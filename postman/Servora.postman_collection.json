@@ -1,0 +1,499 @@
+﻿{
+  "info": {
+    "name": "Servora API",
+    "_postman_id": "servora-api-v1",
+    "description": "Comprehensive Postman Collection for Servora — Full-Stack On-Demand Services Platform with MongoDB, Redis, Stripe, Socket.IO, BullMQ.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api", "type": "string" },
+    { "key": "customerToken", "value": "", "type": "string" },
+    { "key": "providerToken", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "bookingId", "value": "", "type": "string" },
+    { "key": "invoiceId", "value": "", "type": "string" },
+    { "key": "serviceId", "value": "", "type": "string" },
+    { "key": "categoryId", "value": "", "type": "string" },
+    { "key": "providerId", "value": "", "type": "string" },
+    { "key": "conversationId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login as Customer (Usman)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.token) {",
+                  "    pm.collectionVariables.set('customerToken', res.data.token);",
+                  "    console.log('Customer token set');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"usman.customer@servora.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login as Provider (Ahmed)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.token) {",
+                  "    pm.collectionVariables.set('providerToken', res.data.token);",
+                  "    pm.collectionVariables.set('providerId', res.data.user._id);",
+                  "    console.log('Provider token set');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ahmed.tech@servora.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.token) {",
+                  "    pm.collectionVariables.set('adminToken', res.data.token);",
+                  "    console.log('Admin token set');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@servora.com\",\n  \"password\": \"Admin123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Register New Customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Zainab Ali\",\n  \"email\": \"zainab.test@servora.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"CUSTOMER\",\n  \"phone\": \"+923009988776\",\n  \"address\": {\n    \"city\": \"Lahore\",\n    \"street\": \"Main Boulevard Gulberg\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{customerToken}}" }],
+            "url": { "raw": "{{baseUrl}}/users/profile", "host": ["{{baseUrl}}"], "path": ["users", "profile"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.categories && res.data.categories.length > 0) {",
+                  "    pm.collectionVariables.set('categoryId', res.data.categories[0]._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          }
+        },
+        {
+          "name": "Create Category (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Smart Home & IoT Setup\",\n  \"group\": \"Technology\",\n  \"icon\": \"cpu\",\n  \"description\": \"Installation and configuration of smart switches, cameras, and hubs.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Services",
+      "item": [
+        {
+          "name": "List Services (With Filters & Search)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.services && res.data.services.length > 0) {",
+                  "    pm.collectionVariables.set('serviceId', res.data.services[0]._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/services?search=AC&sortBy=startingPrice&sortOrder=asc&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["services"],
+              "query": [
+                { "key": "search", "value": "AC" },
+                { "key": "sortBy", "value": "startingPrice" },
+                { "key": "sortOrder", "value": "asc" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Service Detail",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/services/{{serviceId}}", "host": ["{{baseUrl}}"], "path": ["services", "{{serviceId}}"] }
+          }
+        },
+        {
+          "name": "Create Service (Provider)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{providerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Emergency Electrical Panel Overhaul\",\n  \"category\": \"{{categoryId}}\",\n  \"description\": \"Comprehensive inspection and replacement of faulty circuit breakers.\",\n  \"startingPrice\": 3500,\n  \"estimatedDuration\": \"2-3 hours\",\n  \"serviceArea\": [\"DHA Phase 5\", \"Gulberg\", \"Model Town\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/services", "host": ["{{baseUrl}}"], "path": ["services"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Providers",
+      "item": [
+        {
+          "name": "List Providers",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/providers?limit=10", "host": ["{{baseUrl}}"], "path": ["providers"] }
+          }
+        },
+        {
+          "name": "Get Provider Profile Detail",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/providers/{{providerId}}", "host": ["{{baseUrl}}"], "path": ["providers", "{{providerId}}"] }
+          }
+        },
+        {
+          "name": "Update Provider Availability",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{providerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"availability\": {\n    \"days\": [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\"],\n    \"startTime\": \"08:30\",\n    \"endTime\": \"19:00\"\n  },\n  \"serviceAreas\": [\"DHA Lahore\", \"Gulberg\", \"Cantt\", \"Johar Town\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/provider/availability", "host": ["{{baseUrl}}"], "path": ["provider", "availability"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Bookings Lifecycle",
+      "item": [
+        {
+          "name": "Step 1: Create Booking (Customer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.booking) {",
+                  "    pm.collectionVariables.set('bookingId', res.data.booking._id);",
+                  "    console.log('Created booking ID:', res.data.booking._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{customerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serviceId\": \"{{serviceId}}\",\n  \"bookingDate\": \"2026-09-01\",\n  \"timeSlot\": \"02:00 PM - 04:00 PM\",\n  \"address\": {\n    \"street\": \"House 45, Street 12, Phase 6, DHA\",\n    \"city\": \"Lahore\",\n    \"zipCode\": \"54000\"\n  },\n  \"notes\": \"Master bedroom AC unit not blowing cold air. Urgent.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings", "host": ["{{baseUrl}}"], "path": ["bookings"] }
+          }
+        },
+        {
+          "name": "Step 2: Provider Accepts Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{providerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACCEPTED\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/{{bookingId}}/status", "host": ["{{baseUrl}}"], "path": ["bookings", "{{bookingId}}", "status"] }
+          }
+        },
+        {
+          "name": "Step 3: Provider Starts Service (IN_PROGRESS)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{providerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"IN_PROGRESS\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/{{bookingId}}/status", "host": ["{{baseUrl}}"], "path": ["bookings", "{{bookingId}}", "status"] }
+          }
+        },
+        {
+          "name": "Step 4: Provider Completes Service (SERVICE_COMPLETED)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{providerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"SERVICE_COMPLETED\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/{{bookingId}}/status", "host": ["{{baseUrl}}"], "path": ["bookings", "{{bookingId}}", "status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Invoicing & Cash on Delivery Payments",
+      "item": [
+        {
+          "name": "Step 5: Generate Itemized Invoice (Provider)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.invoice) {",
+                  "    pm.collectionVariables.set('invoiceId', res.data.invoice._id);",
+                  "    console.log('Created invoice ID:', res.data.invoice._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{providerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"{{bookingId}}\",\n  \"serviceFee\": 1500,\n  \"laborFee\": 1200,\n  \"partsFee\": 2500,\n  \"extraFee\": 0,\n  \"tax\": 0,\n  \"discount\": 200,\n  \"items\": [\n    { \"title\": \"Standard AC Deep Wash & Coil Cleaning\", \"amount\": 1500, \"type\": \"SERVICE\" },\n    { \"title\": \"Technician Diagnostics & Electrical Testing\", \"amount\": 1200, \"type\": \"LABOR\" },\n    { \"title\": \"R410A Freon Gas Refill (1.5 kg)\", \"amount\": 2500, \"type\": \"PARTS\" }\n  ],\n  \"notes\": \"Cleaned dual indoor blower filters, flushed condenser lines, and recharged refrigerant to 135 PSI.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/invoices", "host": ["{{baseUrl}}"], "path": ["invoices"] }
+          }
+        },
+        {
+          "name": "Step 6: Confirm Cash Payment Received (Provider)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{providerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"bookingId\": \"{{bookingId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/payments/confirm-cash", "host": ["{{baseUrl}}"], "path": ["payments", "confirm-cash"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Reviews & Ratings",
+      "item": [
+        {
+          "name": "Step 8: Submit 5-Star Review (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{customerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"{{bookingId}}\",\n  \"rating\": 5,\n  \"comment\": \"Excellent service! Ahmed arrived right on time, explained the issue clearly, and restored the AC perfectly.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/reviews", "host": ["{{baseUrl}}"], "path": ["reviews"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Real-Time Chat",
+      "item": [
+        {
+          "name": "Create or Retrieve Conversation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "if (res.success && res.data && res.data.conversation) {",
+                  "    pm.collectionVariables.set('conversationId', res.data.conversation._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{customerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetUserId\": \"{{providerId}}\",\n  \"bookingId\": \"{{bookingId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/conversations", "host": ["{{baseUrl}}"], "path": ["conversations"] }
+          }
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{customerToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hello, please let me know when you are en route.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages", "host": ["{{baseUrl}}"], "path": ["conversations", "{{conversationId}}", "messages"] }
+          }
+        },
+        {
+          "name": "Get Conversation Messages",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{customerToken}}" }],
+            "url": { "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages", "host": ["{{baseUrl}}"], "path": ["conversations", "{{conversationId}}", "messages"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Admin Endpoints",
+      "item": [
+        {
+          "name": "Get Platform KPI Analytics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/kpis", "host": ["{{baseUrl}}"], "path": ["admin", "kpis"] }
+          }
+        },
+        {
+          "name": "Get All Users List",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/users?limit=50", "host": ["{{baseUrl}}"], "path": ["admin", "users"] }
+          }
+        },
+        {
+          "name": "Get Platform Activity Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/activity-logs?limit=50", "host": ["{{baseUrl}}"], "path": ["admin", "activity-logs"] }
+          }
+        }
+      ]
+    }
+  ]
+}

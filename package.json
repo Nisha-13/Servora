@@ -1,0 +1,35 @@
+﻿{
+  "name": "servora",
+  "version": "1.0.0",
+  "description": "Production-Ready Full-Stack Multi-Service Booking Marketplace",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:worker": "npm --prefix backend run worker",
+    "dev": "concurrently -n \"BACKEND,FRONTEND,WORKER\" -c \"bgBlue.bold,bgGreen.bold,bgMagenta.bold\" \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:worker\"",
+    "start": "npm --prefix backend start",
+    "worker": "npm --prefix backend run worker",
+    "seed": "npm --prefix backend run seed",
+    "build:css": "npm --prefix frontend run build:css",
+    "test": "npm --prefix backend run test"
+  },
+  "keywords": [
+    "marketplace",
+    "services",
+    "booking",
+    "express",
+    "mongodb",
+    "redis",
+    "bullmq",
+    "stripe",
+    "socketio",
+    "tailwind"
+  ],
+  "author": "Servora Engineering Team",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

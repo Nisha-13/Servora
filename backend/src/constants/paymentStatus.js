@@ -1,0 +1,12 @@
+export const PAYMENT_STATUS = Object.freeze({
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+});
+
+export const INVOICE_STATUS = Object.freeze({
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED'
+});

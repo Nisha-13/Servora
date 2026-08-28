@@ -1,0 +1,19 @@
+﻿{
+  "name": "servora-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Servora Frontend Web Application",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "dev:server": "live-server --port=3000 --cors --watch=.,dist,js,pages,components",
+    "dev": "concurrently -n \"CSS,SERVER\" -c \"bgCyan.bold,bgYellow.bold\" \"npm run watch:css\" \"npm run dev:server\""
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
+    "live-server": "^1.2.2",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17"
+  }
+}
