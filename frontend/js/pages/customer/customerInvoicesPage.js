@@ -3,10 +3,10 @@ import { ApiClient } from '../../api.js';
 export class CustomerInvoicesPage {
   static async render(container) {
     container.innerHTML = `
-      <div class="py-8 px-4 lg:px-8 max-w-5xl mx-auto w-full space-y-6">
+      <div class="py-6 sm:py-8 px-3 sm:px-4 lg:px-8 max-w-5xl mx-auto w-full space-y-6 overflow-hidden">
         <div>
-          <h1 class="text-3xl font-extrabold text-white tracking-tight">My Invoices</h1>
-          <p class="text-xs text-slate-400 mt-1">Complete billing history with itemized invoice breakdowns and Cash on Delivery status.</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">My Invoices</h1>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Complete billing history with itemized invoice breakdowns and Cash on Delivery status.</p>
         </div>
         <div id="invoices-list" class="space-y-4">
           <div class="animate-pulse bg-slate-900/60 rounded-2xl h-40"></div>

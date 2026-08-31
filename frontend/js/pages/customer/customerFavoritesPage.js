@@ -1,4 +1,4 @@
-﻿import { ApiClient } from '../../api.js';
+import { ApiClient } from '../../api.js';
 import { RatingStars } from '../../components/ratingStars.js';
 import { Toast } from '../../components/toast.js';
 
@@ -8,33 +8,33 @@ export class CustomerFavoritesPage {
 
   static async render(container) {
     container.innerHTML = `
-      <div class="py-8 px-4 lg:px-8 max-w-6xl mx-auto w-full space-y-6">
+      <div class="py-6 sm:py-8 px-3 sm:px-4 lg:px-8 max-w-6xl mx-auto w-full space-y-6 overflow-hidden">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 class="text-3xl font-extrabold text-white tracking-tight">Saved & Favorites</h1>
-            <p class="text-xs text-slate-400 mt-1">Your saved services and trusted professionals for quick access.</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Saved & Favorites</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Your saved services and trusted professionals for quick access.</p>
           </div>
 
           <!-- Tab Selector -->
-          <div class="flex items-center space-x-2 bg-slate-900/80 p-1 rounded-2xl border border-slate-800 self-start">
+          <div class="flex items-center space-x-2 bg-slate-900/80 p-1 rounded-2xl border border-slate-800 self-start max-w-full overflow-x-auto">
             <button
               id="tab-services-btn"
               onclick="window.switchFavTab('services')"
-              class="px-4 py-2 rounded-xl text-xs font-bold transition ${CustomerFavoritesPage._activeTab === 'services' ? 'bg-sky-500 text-white shadow-md' : 'text-slate-400 hover:text-white'}"
+              class="px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 ${CustomerFavoritesPage._activeTab === 'services' ? 'bg-sky-500 text-white shadow-md' : 'text-slate-400 hover:text-white'}"
             >
               Saved Services
             </button>
             <button
               id="tab-providers-btn"
               onclick="window.switchFavTab('providers')"
-              class="px-4 py-2 rounded-xl text-xs font-bold transition ${CustomerFavoritesPage._activeTab === 'providers' ? 'bg-sky-500 text-white shadow-md' : 'text-slate-400 hover:text-white'}"
+              class="px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 ${CustomerFavoritesPage._activeTab === 'providers' ? 'bg-sky-500 text-white shadow-md' : 'text-slate-400 hover:text-white'}"
             >
               Saved Providers
             </button>
           </div>
         </div>
 
-        <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           <div class="animate-pulse bg-slate-900/60 rounded-2xl h-52"></div>
           <div class="animate-pulse bg-slate-900/60 rounded-2xl h-52"></div>
           <div class="animate-pulse bg-slate-900/60 rounded-2xl h-52"></div>

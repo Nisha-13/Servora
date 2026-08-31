@@ -18,13 +18,13 @@ export class CustomerProfilePage {
     CustomerProfilePage._selectedAvatarFile = null;
 
     container.innerHTML = `
-      <div class="py-8 px-4 lg:px-8 max-w-3xl mx-auto w-full space-y-6">
+      <div class="py-6 sm:py-8 px-3 sm:px-4 lg:px-8 max-w-3xl mx-auto w-full space-y-6 overflow-hidden">
         <div>
-          <h1 class="text-3xl font-extrabold text-white tracking-tight">My Profile</h1>
-          <p class="text-xs text-slate-400 mt-1">Update your personal information, profile photo, and security preferences.</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">My Profile</h1>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Update your personal information, profile photo, and security preferences.</p>
         </div>
 
-        <div class="glass-panel p-8 rounded-3xl border border-slate-800 space-y-6">
+        <div class="glass-panel p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-slate-800 space-y-6">
           <!-- Avatar Section with Upload Option -->
           <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 pb-6 border-b border-slate-800">
             <div class="relative group w-24 h-24 shrink-0">

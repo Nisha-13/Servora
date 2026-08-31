@@ -8,30 +8,30 @@ export class CustomerBookingsPage {
     const activeTab = queryParams.status || 'ALL';
 
     container.innerHTML = `
-      <div class="py-8 px-4 lg:px-8 max-w-7xl mx-auto w-full space-y-6">
+      <div class="py-6 sm:py-8 px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto w-full space-y-6 overflow-hidden">
         <div>
-          <h1 class="text-3xl font-extrabold text-white tracking-tight">My Service Bookings</h1>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">My Service Bookings</h1>
           <p class="text-xs sm:text-sm text-slate-400 mt-1">Track appointments, review itemized invoices, and pay completed services.</p>
         </div>
 
         <!-- Filter Tabs -->
-        <div class="flex items-center space-x-2 overflow-x-auto pb-2 border-b border-slate-800 text-xs font-semibold">
-          <button onclick="window.filterCustomerBookings('ALL')" class="px-4 py-2 rounded-xl transition ${activeTab === 'ALL' ? 'bg-sky-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
+        <div class="flex items-center space-x-2 overflow-x-auto pb-2 border-b border-slate-800 text-xs font-semibold max-w-full">
+          <button onclick="window.filterCustomerBookings('ALL')" class="px-4 py-2 rounded-xl transition shrink-0 ${activeTab === 'ALL' ? 'bg-sky-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
             All Bookings
           </button>
-          <button onclick="window.filterCustomerBookings('PENDING')" class="px-4 py-2 rounded-xl transition ${activeTab === 'PENDING' ? 'bg-amber-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
+          <button onclick="window.filterCustomerBookings('PENDING')" class="px-4 py-2 rounded-xl transition shrink-0 ${activeTab === 'PENDING' ? 'bg-amber-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
             Pending Requests
           </button>
-          <button onclick="window.filterCustomerBookings('ACCEPTED')" class="px-4 py-2 rounded-xl transition ${activeTab === 'ACCEPTED' ? 'bg-blue-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
+          <button onclick="window.filterCustomerBookings('ACCEPTED')" class="px-4 py-2 rounded-xl transition shrink-0 ${activeTab === 'ACCEPTED' ? 'bg-blue-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
             Accepted
           </button>
-          <button onclick="window.filterCustomerBookings('IN_PROGRESS')" class="px-4 py-2 rounded-xl transition ${activeTab === 'IN_PROGRESS' ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
+          <button onclick="window.filterCustomerBookings('IN_PROGRESS')" class="px-4 py-2 rounded-xl transition shrink-0 ${activeTab === 'IN_PROGRESS' ? 'bg-indigo-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
             In Progress
           </button>
-          <button onclick="window.filterCustomerBookings('PAYMENT_PENDING')" class="px-4 py-2 rounded-xl transition ${activeTab === 'PAYMENT_PENDING' ? 'bg-amber-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
+          <button onclick="window.filterCustomerBookings('PAYMENT_PENDING')" class="px-4 py-2 rounded-xl transition shrink-0 ${activeTab === 'PAYMENT_PENDING' ? 'bg-amber-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
             Payment Pending (Cash)
           </button>
-          <button onclick="window.filterCustomerBookings('PAID')" class="px-4 py-2 rounded-xl transition ${activeTab === 'PAID' ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
+          <button onclick="window.filterCustomerBookings('PAID')" class="px-4 py-2 rounded-xl transition shrink-0 ${activeTab === 'PAID' ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white bg-slate-900'}">
             Completed & Paid
           </button>
         </div>
@@ -84,45 +84,45 @@ export class CustomerBookingsPage {
       listContainer.innerHTML = bookings
         .map(
           (b) => `
-        <div class="glass-card p-6 rounded-3xl border border-slate-800 space-y-5 transition">
+        <div class="glass-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-800 space-y-4 sm:space-y-5 transition overflow-hidden">
           <!-- Top Header -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
-            <div>
-              <div class="flex items-center space-x-2.5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 border-b border-slate-800/80 pb-3 sm:pb-4">
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs font-mono font-bold text-sky-400">${b.bookingNumber}</span>
                 <span class="text-slate-500">•</span>
                 <span class="text-xs text-slate-400">Created ${new Date(b.createdAt).toLocaleDateString()}</span>
               </div>
-              <h3 class="text-base font-bold text-white mt-1">${b.service?.name || 'Professional Service'}</h3>
+              <h3 class="text-sm sm:text-base font-bold text-white mt-1 truncate">${b.service?.name || 'Professional Service'}</h3>
             </div>
-            <div>
-              <span class="px-3 py-1 rounded-lg text-xs font-extrabold uppercase badge-${b.status.toLowerCase()}">
+            <div class="shrink-0 self-start sm:self-auto">
+              <span class="px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-xs font-extrabold uppercase badge-${b.status.toLowerCase()}">
                 ${b.status.replace('_', ' ')}
               </span>
             </div>
           </div>
 
           <!-- Middle Details Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-xs">
             <!-- Provider Info -->
-            <div class="flex items-center space-x-3 p-3 rounded-2xl bg-slate-900/60 border border-slate-800">
-              <img src="${b.provider?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'}" class="w-10 h-10 rounded-xl object-cover ring-2 ring-sky-500/20" />
-              <div>
+            <div class="flex items-center space-x-3 p-3 rounded-2xl bg-slate-900/60 border border-slate-800 min-w-0">
+              <img src="${b.provider?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'}" class="w-10 h-10 rounded-xl object-cover ring-2 ring-sky-500/20 shrink-0" />
+              <div class="min-w-0 flex-1">
                 <div class="text-[10px] text-slate-500 uppercase font-semibold">Service Provider</div>
-                <div class="font-bold text-white">${b.provider?.name}</div>
-                <div class="text-slate-400 text-[11px]">${b.provider?.phone || '+92 300 0000000'}</div>
+                <div class="font-bold text-white truncate">${b.provider?.name}</div>
+                <div class="text-slate-400 text-[11px] truncate">${b.provider?.phone || '+92 300 0000000'}</div>
               </div>
             </div>
 
             <!-- Schedule & Address -->
-            <div class="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1">
+            <div class="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1 min-w-0">
               <div class="text-[10px] text-slate-500 uppercase font-semibold">Appointment</div>
               <div class="font-semibold text-slate-200">${new Date(b.bookingDate).toLocaleDateString()} (${b.timeSlot})</div>
               <div class="text-slate-400 text-[11px] truncate">${b.address?.street}, ${b.address?.city}</div>
             </div>
 
             <!-- Pricing / Invoice Summary -->
-            <div class="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1">
+            <div class="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1 min-w-0">
               <div class="text-[10px] text-slate-500 uppercase font-semibold">Billing Summary</div>
               ${
                 b.invoice
@@ -141,25 +141,25 @@ export class CustomerBookingsPage {
           </div>
 
           <!-- Bottom Action Buttons -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
-            <div class="flex items-center space-x-2">
-              <button onclick="window.viewBookingBreakdown('${b._id}')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition flex items-center space-x-1.5">
-                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="window.viewBookingBreakdown('${b._id}')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition flex items-center space-x-1.5 flex-1 sm:flex-none justify-center">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 shrink-0"></i>
                 <span>View Timeline & Invoice</span>
               </button>
-              <button onclick="window.startDirectChat('${b.provider?._id}', '${b._id}')" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/20 text-xs font-semibold transition flex items-center space-x-1.5">
-                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+              <button onclick="window.startDirectChat('${b.provider?._id}', '${b._id}')" class="px-3.5 py-2 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/20 text-xs font-semibold transition flex items-center space-x-1.5 flex-1 sm:flex-none justify-center">
+                <i data-lucide="message-square" class="w-3.5 h-3.5 shrink-0"></i>
                 <span>Chat Provider</span>
               </button>
             </div>
 
-            <div class="flex items-center space-x-2">
+            <div class="flex flex-wrap items-center gap-2">
               ${
                 b.status === 'PAYMENT_PENDING' && b.invoice
                   ? `
-                <div class="px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center space-x-1.5">
-                  <i data-lucide="banknote" class="w-4 h-4"></i>
-                  <span>Cash on Delivery: Pay Rs. ${b.invoice.totalAmount?.toLocaleString()} in cash upon completion</span>
+                <div class="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-semibold flex items-center space-x-1.5 max-w-full break-words">
+                  <i data-lucide="banknote" class="w-4 h-4 shrink-0"></i>
+                  <span>Cash on Delivery: Rs. ${b.invoice.totalAmount?.toLocaleString()}</span>
                 </div>
               `
                   : ''
@@ -168,9 +168,9 @@ export class CustomerBookingsPage {
               ${
                 b.status === 'PAID' && !b.hasReview
                   ? `
-                <button onclick="window.openReviewModal('${b._id}', '${b.service?.name?.replace(/'/g, "\\'")}', '${b.provider?.name?.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold text-xs transition flex items-center space-x-1.5">
-                  <i data-lucide="star" class="w-4 h-4"></i>
-                  <span>Leave 5-Star Review</span>
+                <button onclick="window.openReviewModal('${b._id}', '${b.service?.name?.replace(/'/g, "\\'")}', '${b.provider?.name?.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold text-xs transition flex items-center space-x-1.5 flex-1 sm:flex-none justify-center">
+                  <i data-lucide="star" class="w-4 h-4 shrink-0"></i>
+                  <span>Leave Review</span>
                 </button>
               `
                   : ''
@@ -179,7 +179,7 @@ export class CustomerBookingsPage {
               ${
                 b.status === 'PAID' && b.hasReview
                   ? `
-                <span class="text-xs text-emerald-400 font-semibold flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-1"></i> Review Submitted</span>
+                <span class="text-xs text-emerald-400 font-semibold flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-1 shrink-0"></i> Review Submitted</span>
               `
                   : ''
               }
@@ -187,7 +187,7 @@ export class CustomerBookingsPage {
               ${
                 ['PENDING', 'ACCEPTED'].includes(b.status)
                   ? `
-                <button onclick="window.cancelCustomerBooking('${b._id}')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 border border-slate-800 text-xs transition">
+                <button onclick="window.cancelCustomerBooking('${b._id}')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 border border-slate-800 text-xs transition flex-1 sm:flex-none justify-center">
                   Cancel Booking
                 </button>
               `

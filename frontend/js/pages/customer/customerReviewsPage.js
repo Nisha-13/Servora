@@ -5,10 +5,10 @@ import { store } from '../../state.js';
 export class CustomerReviewsPage {
   static async render(container) {
     container.innerHTML = `
-      <div class="py-8 px-4 lg:px-8 max-w-4xl mx-auto w-full space-y-6">
+      <div class="py-6 sm:py-8 px-3 sm:px-4 lg:px-8 max-w-4xl mx-auto w-full space-y-6 overflow-hidden">
         <div>
-          <h1 class="text-3xl font-extrabold text-white tracking-tight">My Reviews</h1>
-          <p class="text-xs text-slate-400 mt-1">All reviews you have submitted for completed service bookings.</p>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">My Reviews</h1>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">All reviews you have submitted for completed service bookings.</p>
         </div>
         <div id="reviews-list" class="space-y-4">
           <div class="animate-pulse bg-slate-900/60 rounded-2xl h-32"></div>
