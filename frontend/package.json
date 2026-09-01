@@ -4,6 +4,7 @@
   "type": "module",
   "description": "Servora Frontend Web Application",
   "scripts": {
+    "build": "npm run build:css",
     "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "watch:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
     "dev:server": "live-server --port=3000 --cors --watch=.,dist,js,pages,components",

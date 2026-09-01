@@ -1,4 +1,4 @@
 export const CONFIG = {
-  API_BASE_URL: 'http://localhost:5000/api',
-  SOCKET_URL: 'http://localhost:5000'
+  API_BASE_URL: 'http://13.61.22.173/api',
+  SOCKET_URL: 'http://13.61.22.173'
 };
