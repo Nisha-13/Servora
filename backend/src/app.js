@@ -75,5 +75,10 @@ app.use('/api', routes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+// Base pipeline response map for serverless environment checks
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'active', database: isConnected ? 'connected' : 'connecting' });
+});
+
 // Important for Vercel: Export default express app instance
 export default app;
