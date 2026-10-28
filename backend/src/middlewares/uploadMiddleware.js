@@ -4,9 +4,14 @@ import fs from 'fs';
 import { AppError } from '../utils/appError.js';
 import { config } from '../config/environment.js';
 
-// Ensure upload directories exist
-const uploadDir = path.resolve(config.uploads.path);
-if (!fs.existsSync(uploadDir)) {
+// 🌟 Safe Storage Resolution for Serverless Containers (Vercel uses /tmp)
+const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL;
+const uploadDir = isProduction 
+  ? '/tmp' 
+  : path.resolve(config.uploads.path || './uploads');
+
+// Only attempt to provision physical static folders when hosting locally
+if (!isProduction && !fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
@@ -37,7 +42,7 @@ export const uploadSingleImage = (fieldName = 'image') => {
   return multer({
     storage,
     limits: {
-      fileSize: config.uploads.maxFileSizeMb * 1024 * 1024
+      fileSize: (config.uploads?.maxFileSizeMb || 5) * 1024 * 1024
     },
     fileFilter
   }).single(fieldName);
@@ -47,7 +52,7 @@ export const uploadMultipleImages = (fieldName = 'images', maxCount = 5) => {
   return multer({
     storage,
     limits: {
-      fileSize: config.uploads.maxFileSizeMb * 1024 * 1024
+      fileSize: (config.uploads?.maxFileSizeMb || 5) * 1024 * 1024
     },
     fileFilter
   }).array(fieldName, maxCount);
