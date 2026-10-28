@@ -65,20 +65,20 @@ app.use('/uploads', express.static(uploadsPath));
 const frontendDistPath = path.resolve(__dirname, '../../frontend');
 app.use(express.static(frontendDistPath));
 
+// Base pipeline response map for serverless environment checks (Placed BEFORE Error handlers)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'active', database: isConnected ? 'connected' : 'connecting' });
+});
+
 // Apply global API rate limiter
 app.use('/api', apiLimiter);
 
 // Mount API routes
 app.use('/api', routes);
 
-// 404 & Global Error Handling
+// 404 & Global Error Handling (Must ALWAYS be at the very bottom)
 app.use(notFoundHandler);
 app.use(errorHandler);
-
-// Base pipeline response map for serverless environment checks
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'active', database: isConnected ? 'connected' : 'connecting' });
-});
 
 // Important for Vercel: Export default express app instance
 export default app;
