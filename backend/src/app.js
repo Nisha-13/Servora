@@ -9,9 +9,13 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import { notFoundHandler, errorHandler } from './middlewares/errorMiddleware.js';
 import { apiLimiter } from './middlewares/rateLimiter.js';
 import { config } from './config/environment.js';
+import { connectDB } from './config/db.js'; // 🌟 Added DB Import
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Initialize Database Connection for Vercel Cloud Requests
+connectDB(); // 🌟 Triggered DB connection here
 
 const app = express();
 
@@ -23,16 +27,10 @@ app.use(
   })
 );
 
-// CORS configuration
+// CORS configuration (Opened for Production Gateway Integration)
 app.use(
   cors({
-    origin: [
-      config.clientUrl,
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-      'http://localhost:5000',
-      'http://127.0.0.1:5000'
-    ],
+    origin: '*', // 🌟 Swapped with wildcard to avoid cloud routing blocks
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
