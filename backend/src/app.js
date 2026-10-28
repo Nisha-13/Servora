@@ -9,15 +9,26 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import { notFoundHandler, errorHandler } from './middlewares/errorMiddleware.js';
 import { apiLimiter } from './middlewares/rateLimiter.js';
 import { config } from './config/environment.js';
-import { connectDB } from './config/db.js'; // 🌟 Added DB Import
+import { connectDB } from './config/db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Initialize Database Connection for Vercel Cloud Requests
-connectDB(); // 🌟 Triggered DB connection here
-
 const app = express();
+
+// Serverless DB Connection Handler (Taake har lambda invocation par crash na ho)
+let isConnected = false;
+app.use(async (req, res, next) => {
+  if (!isConnected) {
+    try {
+      await connectDB();
+      isConnected = true;
+    } catch (err) {
+      console.error("Database connection failed inside Serverless function:", err);
+    }
+  }
+  next();
+});
 
 // Security HTTP headers
 app.use(
@@ -30,7 +41,7 @@ app.use(
 // CORS configuration (Opened for Production Gateway Integration)
 app.use(
   cors({
-    origin: '*', // 🌟 Swapped with wildcard to avoid cloud routing blocks
+    origin: '*', 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -50,7 +61,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 const uploadsPath = path.resolve(__dirname, '../uploads');
 app.use('/uploads', express.static(uploadsPath));
 
-// Also serve frontend statically if built or during integrated run
+// Frontend static build routing
 const frontendDistPath = path.resolve(__dirname, '../../frontend');
 app.use(express.static(frontendDistPath));
 
@@ -64,4 +75,5 @@ app.use('/api', routes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+// Important for Vercel: Export default express app instance
 export default app;
