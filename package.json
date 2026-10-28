@@ -1,6 +1,6 @@
 ﻿{
   "name": "servora",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Production-Ready Full-Stack Multi-Service Booking Marketplace",
   "main": "backend/src/server.js",
   "scripts": {
